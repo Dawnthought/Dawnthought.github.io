@@ -18,7 +18,7 @@
 
   <!--Open Graph Title-->
   
-      <meta property="og:title" content="相册"/>
+      <meta property="og:title" content="项目"/>
   
   <!--Open Graph Description-->
   
@@ -46,7 +46,7 @@
     </script>
   <!-- Title -->
   
-  <title>相册 - 5小时的博客</title>
+  <title>项目 - 5小时的博客</title>
 
 
   <link rel="shortcut icon" href="/favicon.ico">
@@ -131,7 +131,6 @@
 
   <!-- Main Content -->
   <style>
-
 #container {
     margin: auto;
     max-width: 1280px;
@@ -185,167 +184,44 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.prandom ul{
-    overflow: hidden;
-    text-align: center;
+.repo-list{
+    list-style: none;
 }
-.post-random .photo {
-    margin: 5px;
-    width: 23%;
+li.repo{
+    width: 32%;
     display: inline-block;
-    line-height: 0;
+    border: 1px solid #ddd;
+    margin: 0.3%;
+    box-shadow: 0 0 8px 0 rgba(0,0,0,.25);
+    transition: all .3s linear;
 }
-.photo_shows {
+li.repo:hover{
+    box-shadow: 0 0 18px 0 rgba(0,0,0,.5);
+}
+li.repo h2 {
+    margin-top: 20px;
+    padding: 10px 20px 5px;
+    color: #CE2323;
+}
+li.repo p.commit {
+    padding: 0 20px 20px;
+    font-size: 0.6em;
+}
+li p.fot{
+    margin: 0 20px 15px;
+}
+
+li span.pic{
     position: relative;
-    margin-bottom: 2rem;
+    top: 1px;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
 }
-.photo_shows a .mask {
-    position: absolute;
-    font-size: 20px;
-    top: 30%;
-    bottom: 60%;
-    left: 0;
-    right: 0;
-    padding: 0 20px;
-    padding-top: 7em;
-    margin: auto;
-    color: transparent;
-    background: 0 0;
-    opacity: 0;
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-.photo_shows img {
-    width: 100%;
-    height: 100%;
-}
-.photo_shows a:hover .mask {
-    top: 0px;
-    bottom: 0px;
-    color: rgb(255, 255, 255);
-    opacity: 1;
-    background: rgba(0, 0, 0, 0.65098);
-}
-#imgbox-loading {
-    position: absolute;
-    top: 0;
-    left: 0;
-    cursor: pointer;
-    display: none;
-    z-index: 90;
-}
-
-#imgbox-loading div {
-    background: #FFF;
-    width: 100%;
-    height : 100%;
-}
-
-#imgbox-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    display: none;
-    z-index: 80;
-}
-
-.imgbox-wrap {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: #FFF;
-    display: none;
-    z-index: 90;
-}
-
-.imgbox-img {
-    padding: 0;
-    margin: 0;
-    border: none;
-    width: 100%;
-    height: 100%;
-    vertical-align: top;
-}
-
-.imgbox-close {
-    position: absolute;
-    top: -15px;
-    right: -15px;
-    height: 30px;
-    width: 30px;
-    cursor: pointer;
-    outline: none;
-}
-
-.imgbox-title {
-    padding-top: 10px;
-    font-size: 11px;
-    text-align: center;
-    font-family: Arial;
-    color: #333;
-    display: none;
-}
-
-.imgbox-bg-wrap {
-    position: absolute;
-    padding: 0;
-    margin: 0;
-    display: none;
-}
-
-.imgbox-bg {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-}
-
-.imgbox-bg-n {
-    left: 0;
-    top: -20px;
-    width: 100%;
-}
-
-.imgbox-bg-ne {
-    right: -20px;
-    top: -20px;
-}
-
-.imgbox-bg-e {
-    right: -20px;
-    top: 0;
-    height: 100%;
-}
-
-.imgbox-bg-se {
-    right: -20px;
-    bottom: -20px;
-}
-
-.imgbox-bg-s {
-    left: 0;
-    bottom: -20px;
-    width: 100%;
-}
-
-.imgbox-bg-sw {
-    left: -20px;
-    bottom: -20px;
-}
-
-.imgbox-bg-w {
-    left: -20px;
-    top: 0;
-    height: 100%;
-}
-
-.imgbox-bg-nw {
-    left: -20px;
-    top: -20px;
+li span.language{
+    padding-left: 20px;
+    color: #767676;
 }
 @media all and (max-width:1440px){
     #container{max-width:1100px}
@@ -357,6 +233,13 @@
         margin-top: 2em;
     }
 }
+@media screen and (max-width: 960px) {
+    li.repo {
+        display: block;
+        width: 85%;
+        margin: 10px auto;
+    }
+}
 @media (max-width: 720px) {
     #container {
         box-shadow: rgba(0, 0, 0, 0.298039) 0px 0px 0px 0px, rgba(0, 0, 0, 0.298039) 0px 0px 0px 0px;
@@ -365,94 +248,63 @@
         padding: 15px;
 
     }
-    .post-random {
-        width: 100%;
-    }
-    .post-random .photo {
-        width: 32%;
-        display: inline-block;
-        box-sizing: border-box;
-        border-radius: 3px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: rgba(0, 0, 0, 0.0470588);
-        border-image: initial;
-        margin: 0px;
-    }
+}
 
-    .post-random .photo-item {
-        height: 100%;
-        background-size: cover;
-    }
-    .photo_shows a .mask {
-        padding-top: 50%;
-        font-size: 15px;
-    }
-}
-@media (max-width: 540px) {
-    .prandom {
-        margin: auto;
-        width: 114%;
-        margin-left: -20px;
-    }
-    .post-random {
-        width: 100%;
-    }
-    .post-random .photo {
-        border-radius: 3px;
-        border: 1px solid rgba(0,0,0,.05);
-        margin-bottom: 0;
-        width: 32%;
-        display: inline-block;
-        box-sizing: border-box;
-        margin: 0px;
-    }
-}
 </style>
 <div id="container">
     <div class="about-me about_mob" style="display: inherit;">
         <div class="profile">
             <img alt="" src="https://up.enterdesk.com/edpic/db/73/6b/db736b6f188b18ee08a82183e37f3f33.jpg"  class="avatar avatar-450 photo" height="450" width="450">
             <div class="info aboutinfo">
-                <h1><span>5小时的博客</span>的相册薄</h1>
+                <h1><span>5小时的博客</span>的代码库</h1>
                 <p>永远相信</p>
                 <p>美好的事情即将发生</p>
             </div>
         </div>
     </div>
-    <div class="prandom">
-        <div class="post-random"><ul class="js-photos"><ul>
-            
-            
-                <li class="photo photo_shows">
-                   <a class="photo-item" href="http://oct3pmpde.bkt.clouddn.com/9a75825d20a21a59472d7f17f758682c82fcadd025169-D9G2Hv_fw658_meitu_11.jpg" target="_blank">
-                      <div class="mask transition3">旅行</div>
-                      <img src="http://oct3pmpde.bkt.clouddn.com/9a75825d20a21a59472d7f17f758682c82fcadd025169-D9G2Hv_fw658_meitu_11.jpg">
-                   </a>
-                </li>
-            
-                <li class="photo photo_shows">
-                   <a class="photo-item" href="http://oct3pmpde.bkt.clouddn.com/15307563afb5f071d66161bf7cdbdb496ea5674814c5f-GKX9ys_fw658_meitu_3.jpg" target="_blank">
-                      <div class="mask transition3">萌</div>
-                      <img src="http://oct3pmpde.bkt.clouddn.com/15307563afb5f071d66161bf7cdbdb496ea5674814c5f-GKX9ys_fw658_meitu_3.jpg">
-                   </a>
-                </li>
-            
-                <li class="photo photo_shows">
-                   <a class="photo-item" href="http://oct3pmpde.bkt.clouddn.com/ad01a45561cee108d12f25f09930c80f2f2a91238510-Ys0wNX_fw658_meitu_1.jpg" target="_blank">
-                      <div class="mask transition3">无脸男</div>
-                      <img src="http://oct3pmpde.bkt.clouddn.com/ad01a45561cee108d12f25f09930c80f2f2a91238510-Ys0wNX_fw658_meitu_1.jpg">
-                   </a>
-                </li>
-            
-        </ul>
-        </ul></div></div>
+    <div class="codeBox">
+        <ol class="repo-list">
+		
+		  <li class="repo">
+                    <a href="https://dawnthought.github.io/2018/09/21/%E5%B0%8F%E6%97%B6/" target="_blank">
+                    	<div class="content">
+                          <h2 class="title">不要</h2>
+                          <p class="commit">哈哈</p>
+                          <p class="fot">
+                            <span class="pic" style="background-color: #f1e05a;"></span><span class="language">css</span>
+                          </p>
+                        </div>
+                    </a>
+                  </li>
+                
+		  <li class="repo">
+                    <a href="https://dawnthought.github.io/2018/09/21/%E5%B0%8F%E6%97%B6/" target="_blank">
+                    	<div class="content">
+                          <h2 class="title">怪</h2>
+                          <p class="commit">哈哈哈</p>
+                          <p class="fot">
+                            <span class="pic" style="background-color: #f1e05a;"></span><span class="language">css</span>
+                          </p>
+                        </div>
+                    </a>
+                  </li>
+                
+		  <li class="repo">
+                    <a href="https://dawnthought.github.io/2018/09/21/%E5%B0%8F%E6%97%B6/" target="_blank">
+                    	<div class="content">
+                          <h2 class="title">我</h2>
+                          <p class="commit">坐等更新吧</p>
+                          <p class="fot">
+                            <span class="pic" style="background-color: #f1e05a;"></span><span class="language">css</span>
+                          </p>
+                        </div>
+                    </a>
+                  </li>
+                
+
+        </ol>
+    </div>
 </div>
-<script type="text/javascript" src="http://oct3pmpde.bkt.clouddn.com/jquery.min.js"></script>
-<script type="text/javascript" src="http://oct3pmpde.bkt.clouddn.com/jquery.imgbox.pack.js"></script>
-<script type="text/javascript">
-    $("a.photo-item").imgbox({'alignment':'center','zoomOpacity': true,'speedIn':0});
-</script>
 
 
   <!-- Footer -->
