@@ -18,7 +18,7 @@
 
   <!--Open Graph Title-->
   
-      <meta property="og:title" content="5小时的博客"/>
+      <meta property="og:title" content="进程间通信(二)"/>
   
   <!--Open Graph Description-->
   
@@ -28,7 +28,7 @@
   <meta property="og:site_name" content="5小时的博客"/>
   <!--Type page-->
   
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content="article" />
   
   <!--Page Cover-->
   
@@ -46,7 +46,7 @@
     </script>
   <!-- Title -->
   
-  <title>Archives: 2018 - 5小时的博客</title>
+  <title>进程间通信(二) - 5小时的博客</title>
 
 
   <link rel="shortcut icon" href="/favicon.ico">
@@ -139,92 +139,110 @@
 
 
   <!-- Main Content -->
-  
-
-<!-- Main Content -->
-<div class="archive content-area">
-  <div class="container">
-    <h1 class="entry-title">2018</h1>
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <!-- Use lodash to classify posts. See https://lodash.com/docs#groupBy
-          1. group site.posts by year
-          2. sort posts-in-one-year by Month and Day
-        -->
-        
-
-        
-          <h2 class="year">2018</h2>
-          <ul class="list">
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            进程间通信(二)
             
-  <li>
-    <span class="date">
-      2018-10-11
-    </span>
-    <a href="/2018/10/11/进程间通信-中/" class="title">
-      进程间通信(二)
-    </a>
-  </li>
+          </h1>
+         
+        </div>
+         <p class="a-posted-on">
+          2018-10-11
+          </p>
+        <!-- Post Main Content -->
+        <div class="entry-content">
+          <h3 id="pipe"><a href="#pipe" class="headerlink" title="pipe"></a>pipe</h3><ul>
+<li>首先：多个进程可以享用同一个端，也就是一个管道支持多进程通信</li>
+<li><p>非常安全的操作。</p>
+<a id="more"></a>
+<h3 id="信号-状态-通信"><a href="#信号-状态-通信" class="headerlink" title="信号(状态)通信"></a>信号(状态)通信</h3></li>
+<li><p>Event ：一般用来控制进程间执行顺序的</p>
+<ul>
+<li>父进程开启了一个子进程<ul>
+<li>子进程在工作的时候，必须是有某些条件达成</li>
+</ul>
+</li>
+<li>from multiprocessing import Event <ul>
+<li>e = Event()</li>
+<li>e.wait() 在进程内部设置为阻塞</li>
+<li>e.set() 把e状态设置为开启 True</li>
+<li>e.clear() 把e状态设置为阻塞 False</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>非阻塞：Queue支持 <ul>
+<li>缺点：取数据娶不到的时候，直接抛出异常</li>
+<li>好处：是不影响接下来的事情</li>
+<li>分清楚，接下里的事情有没有用到阻塞时要获取到的数据</li>
+</ul>
+</li>
+<li>阻塞：<ul>
+<li>Queue和Pipe均支持<ul>
+<li>访问数据的时候，安全</li>
+<li>会影响到下面继续工作的和这个数据无关紧要的内容</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Queue：<ul>
+<li>好用    <ul>
+<li>q.get</li>
+<li>q.put</li>
+</ul>
+</li>
+<li>可以多进程对多进程通信，方便</li>
+<li>一定要记得维护阻塞非阻塞。</li>
+</ul>
+</li>
+<li>Pipe：<ul>
+<li>多对多进程通信比较麻烦维护</li>
+<li>也支持一对多进程和一对一进程通信，父子进程通信。</li>
+</ul>
+</li>
+</ul>
 
-  <li>
-    <span class="date">
-      2018-10-11
-    </span>
-    <a href="/2018/10/11/进程间通信-下/" class="title">
-      进程间通信(三)
-    </a>
-  </li>
-
-  <li>
-    <span class="date">
-      2018-10-11
-    </span>
-    <a href="/2018/10/11/进程间通信-上/" class="title">
-      进程间通信(一)
-    </a>
-  </li>
-
-  <li>
-    <span class="date">
-      2018-10-11
-    </span>
-    <a href="/2018/10/11/进程代码/" class="title">
-      进程代码
-    </a>
-  </li>
-
-  <li>
-    <span class="date">
-      2018-10-11
-    </span>
-    <a href="/2018/10/11/进程探究/" class="title">
-      进程探究
-    </a>
-  </li>
-
-  <li>
-    <span class="date">
-      2018-10-11
-    </span>
-    <a href="/2018/10/11/Process多进程/" class="title">
-      Process多进程
-    </a>
-  </li>
-
-  <li>
-    <span class="date">
-      2018-09-21
-    </span>
-    <a href="/2018/09/21/小时/" class="title">
-      小时
-    </a>
-  </li>
-
-
-          </ul>
-        
-      </div>
+        </div>
+      </article>
     </div>
+    <!-- Pre or Next -->
+    
+	<div class="container" >
+           <ul class="pager">
+    	     
+      	     <li class="previous">
+              <a href="/2018/10/11/进程间通信-下/" rel="prev">下一篇</a>
+             </li>
+           
+           
+              <li class="next">
+              <a href="/2018/10/11/进程间通信-上/" rel="prev">上一篇</a>
+            </li>
+           
+          </ul>
+       </div>
+　　　　<!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">Comments</h1> -->
+
+  
+</section>
+
+
+    </div>
+   
+　　　　
   </div>
 </div>
 

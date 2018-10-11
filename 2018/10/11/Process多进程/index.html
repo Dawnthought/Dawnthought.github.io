@@ -18,7 +18,7 @@
 
   <!--Open Graph Title-->
   
-      <meta property="og:title" content="进程代码"/>
+      <meta property="og:title" content="Process多进程"/>
   
   <!--Open Graph Description-->
   
@@ -46,7 +46,7 @@
     </script>
   <!-- Title -->
   
-  <title>进程代码 - 5小时的博客</title>
+  <title>Process多进程 - 5小时的博客</title>
 
 
   <link rel="shortcut icon" href="/favicon.ico">
@@ -147,7 +147,7 @@
         <!-- Title date & tags -->
         <div class="post-header">
           <h1 class="entry-title">
-            进程代码
+            Process多进程
             
           </h1>
          
@@ -158,18 +158,45 @@
         <!-- Post Main Content -->
         <div class="entry-content">
           <ul>
-<li>Python实现多进程的方式 ： 创建多子进程</li>
-<li>os.fork()<ul>
-<li>属于C语言的创建内核方式，遗留在了Python种。</li>
-<li>属于Linux平台下才可以使用。<a id="more"></a>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">这是父进程: <span class="number">25284</span></span><br><span class="line">这是子进程: <span class="number">25285</span></span><br><span class="line">---------------------</span><br><span class="line">这是父进程: <span class="number">25284</span>  原始父进程</span><br><span class="line">---------------------</span><br><span class="line">这是父进程: <span class="number">25285</span>  原始子进程</span><br><span class="line">---------------------</span><br><span class="line">新的子进程: <span class="number">25286</span>  继续自己开启新的子进程</span><br><span class="line">---------------------</span><br><span class="line">新的子进程: <span class="number">25287</span>  继续自己开启新的子进程</span><br></pre></td></tr></table></figure>
+<li><p>复习：</p>
 </li>
+<li><p>僵尸状态：是一个进程在执行完任务之后，必须要经历的状态。</p>
+</li>
+<li><p>僵尸进程：子进程早就退出了，父进程不管。造成PCB（进程控制块）无法及时释放：导致无法创建新的进程。</p>
+<a id="more"></a>
+<pre><code>&gt; PID是有限的，65535
+</code></pre></li>
+<li><p>孤儿进程：父进程先于子进程退出，就是孤儿进程。会有init进程（类Unix操作系统下的1号的进程）</p>
+</li>
+<li>短：short    2 ** 16</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span>**<span class="number">16</span></span><br><span class="line"><span class="number">65536</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>8bit == 1byte</li>
+<li>short == 2byte == 65535</li>
+</ul>
+<h2 id="Python创建多进程"><a href="#Python创建多进程" class="headerlink" title="Python创建多进程"></a>Python创建多进程</h2><ul>
+<li><p>multi：北极星</p>
+</li>
+<li><p>multiprocessing，python2.6之后版本才有的，属于内置模块，不需要额外安装</p>
+</li>
+<li><p>这个模块支持跨平台，支持Windows，类Unix</p>
+<ul>
+<li>os.fork：只支持linux</li>
 </ul>
 </li>
+<li><p>通过模块创建子进程：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process</span><br><span class="line">Process(target=<span class="keyword">None</span>, name=<span class="keyword">None</span>, args=(), kwargs=&#123;&#125;, *, daemon=<span class="keyword">None</span>)</span><br><span class="line">	target: 进程工作的任务函数</span><br><span class="line">	name: 进程的名字</span><br><span class="line">	args: 元组为形式，不定长接受 进程工作的任务函数的参数</span><br><span class="line">	kwargs：早点为形式，不定长接受 进程工作的任务函数的参数</span><br><span class="line">这样创建的子进程实例，只会工作target参数所对应的函数。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进程属性</p>
+</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">os.getpid()</span><br><span class="line">返回当前进程的PID值</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">os.waitpid(pid,options)</span><br><span class="line">	pid：需要被回收的子进程ID值</span><br><span class="line">	options: 默认为0，用来表示回收结果</span><br><span class="line">os.wait()</span><br><span class="line">	等待所有子进程结束</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">os.fork()</span><br><span class="line">	父进程：返回创建好的子进程PID</span><br><span class="line">	子进程：返回0</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">p = Process()</span><br><span class="line">p.start() 开启该进程</span><br><span class="line">p.pid 进程PID值，一定是在进程开启之后才能获取到</span><br><span class="line">p.name 进程名</span><br><span class="line">p.daemon=False 父进程会等待子进程退出才会退出，和守护进程经常没关系。</span><br><span class="line">p.daemon = True: 如果父进程结束，那么子进程也会结束，父进程可以不用在等待子进程结束了。</span><br><span class="line">	必须在进程开启之前就要设置好</span><br><span class="line">p.join() 回收进程资源</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">p = current_process()</span><br><span class="line">p.name</span><br><span class="line">p.pid</span><br><span class="line">p.daemon 能获取、不能修改</span><br></pre></td></tr></table></figure>
+<ul>
+<li>用multiprocessing.Process 创建僵尸进程，孤儿进程（5分钟左右），要用time模块。</li>
+</ul>
+
         </div>
       </article>
     </div>
@@ -179,12 +206,12 @@
            <ul class="pager">
     	     
       	     <li class="previous">
-              <a href="/2018/10/11/Process多进程/" rel="prev">下一篇</a>
+              <a href="/2018/10/11/进程间通信-上/" rel="prev">下一篇</a>
              </li>
            
            
               <li class="next">
-              <a href="/2018/10/11/进程探究/" rel="prev">上一篇</a>
+              <a href="/2018/10/11/进程代码/" rel="prev">上一篇</a>
             </li>
            
           </ul>
