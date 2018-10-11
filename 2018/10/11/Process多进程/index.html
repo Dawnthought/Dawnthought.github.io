@@ -157,25 +157,19 @@
           </p>
         <!-- Post Main Content -->
         <div class="entry-content">
-          <ul>
-<li><p>复习：</p>
-</li>
-<li><p>僵尸状态：是一个进程在执行完任务之后，必须要经历的状态。</p>
-</li>
-<li><p>僵尸进程：子进程早就退出了，父进程不管。造成PCB（进程控制块）无法及时释放：导致无法创建新的进程。</p>
-<a id="more"></a>
-<pre><code>&gt; PID是有限的，65535
+          <h2 id="复习："><a href="#复习：" class="headerlink" title="复习："></a>复习：</h2><ul>
+<li>僵尸状态：是一个进程在执行完任务之后，必须要经历的状态。</li>
+<li>僵尸进程：子进程早就退出了，父进程不管。造成PCB（进程控制块）无法及时释放：导致无法创建新的进程。<pre><code>&gt; PID是有限的，65535
 </code></pre></li>
-<li><p>孤儿进程：父进程先于子进程退出，就是孤儿进程。会有init进程（类Unix操作系统下的1号的进程）</p>
-</li>
-<li>短：short    2 ** 16</li>
-</ul>
+<li>孤儿进程：父进程先于子进程退出，就是孤儿进程。会有init进程（类Unix操作系统下的1号的进程）</li>
+<li><p>短：short    2 ** 16</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span>**<span class="number">16</span></span><br><span class="line"><span class="number">65536</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>8bit == 1byte</li>
-<li>short == 2byte == 65535</li>
-</ul>
-<h2 id="Python创建多进程"><a href="#Python创建多进程" class="headerlink" title="Python创建多进程"></a>Python创建多进程</h2><ul>
+</li>
+<li><p>8bit == 1byte</p>
+</li>
+<li><p>short == 2byte == 65535</p>
+<a id="more"></a>
+<h2 id="Python创建多进程"><a href="#Python创建多进程" class="headerlink" title="Python创建多进程"></a>Python创建多进程</h2></li>
 <li><p>multi：北极星</p>
 </li>
 <li><p>multiprocessing，python2.6之后版本才有的，属于内置模块，不需要额外安装</p>
