@@ -18,7 +18,7 @@
 
   <!--Open Graph Title-->
   
-      <meta property="og:title" content="5小时的博客"/>
+      <meta property="og:title" content="进程池"/>
   
   <!--Open Graph Description-->
   
@@ -28,7 +28,7 @@
   <meta property="og:site_name" content="5小时的博客"/>
   <!--Type page-->
   
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content="article" />
   
   <!--Page Cover-->
   
@@ -46,7 +46,7 @@
     </script>
   <!-- Title -->
   
-  <title>Archives: 2018/10 - 5小时的博客</title>
+  <title>进程池 - 5小时的博客</title>
 
 
   <link rel="shortcut icon" href="/favicon.ico">
@@ -139,110 +139,111 @@
 
 
   <!-- Main Content -->
-  
-
-<!-- Main Content -->
-<div class="archive content-area">
-  <div class="container">
-    <h1 class="entry-title">2018/10</h1>
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <!-- Use lodash to classify posts. See https://lodash.com/docs#groupBy
-          1. group site.posts by year
-          2. sort posts-in-one-year by Month and Day
-        -->
-        
-
-        
-          <h2 class="year">2018</h2>
-          <ul class="list">
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            进程池
             
-  <li>
-    <span class="date">
-      2018-10-11
-    </span>
-    <a href="/2018/10/11/Process多进程/" class="title">
-      Process多进程
-    </a>
-  </li>
+          </h1>
+         
+        </div>
+         <p class="a-posted-on">
+          2018-10-11
+          </p>
+        <!-- Post Main Content -->
+        <div class="entry-content">
+          <h3 id="进程池子"><a href="#进程池子" class="headerlink" title="进程池子"></a>进程池子</h3><ul>
+<li><p>当你成千上万的业务需要创建成千上万的进程时，我们可以提前定义一个进程池<br><--more--></--more--></p>
+<ul>
+<li><p>from multiprocessing import Pool</p>
+</li>
+<li><p>p = Pool(10) #进程池创建方式，类似空任务队列</p>
+</li>
+<li>p.apply(func,args) #阻塞<ul>
+<li>func：func指明该进程池种的进程要工作的函数</li>
+<li>args：不定长接收进程池中进程工作函数的参数</li>
+</ul>
+</li>
+<li>p.apply_async(func,args) #非阻塞方式<ul>
+<li>func：func指明该进程池种的进程要工作的函数</li>
+<li>args：不定长接收进程池中进程工作函数的参数</li>
+</ul>
+</li>
+<li>p.close() <ul>
+<li>关闭进程池，不再接收新的任务了。</li>
+</ul>
+</li>
+<li>p.join() **<ul>
+<li>进程池里的进程资源要在关闭进程之后回收</li>
+</ul>
+</li>
+<li>阻塞：单进程 | 串行 | 同步 | 多个进程可以排着队<ul>
+<li>apply</li>
+<li>同一时间只能有一个进程来工作，其他进程等待这个进程的工作函数有了返回结果才能开启工作。</li>
+</ul>
+</li>
+<li>非阻塞：多进程 | 并发 | 异步<ul>
+<li>apply_async</li>
+<li>会在CPU核心数的基础上立即调用所有可用进程池中的进程资源来工作</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>apply：</p>
+<ul>
+<li><p>获取子进程返回值</p>
+</li>
+<li><p>直接获取这个函数的返回值即可</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> var <span class="keyword">in</span> range(<span class="number">12</span>):</span><br><span class="line">	res.append(p.apply(func=work,args=(var,)))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ret = apply_async</p>
+<ul>
+<li>非阻塞多进程执行之后返回的是一个抽象的进程返回结果</li>
+<li>我们需要再次对这个进程返回结果再实际获取才可以拿到进程池工作之后的返回值</li>
+<li>ret.get() 拿到进程池进程执行之后的返回结果</li>
+</ul>
+</li>
+<li><p>避免了进程多次创建而带来的效率上的损耗</p>
+</li>
+</ul>
 
-  <li>
-    <span class="date">
-      2018-10-11
-    </span>
-    <a href="/2018/10/11/进程间通信-中/" class="title">
-      进程间通信(二)
-    </a>
-  </li>
-
-  <li>
-    <span class="date">
-      2018-10-11
-    </span>
-    <a href="/2018/10/11/进程间通信-补充/" class="title">
-      进程间通信(四)
-    </a>
-  </li>
-
-  <li>
-    <span class="date">
-      2018-10-11
-    </span>
-    <a href="/2018/10/11/进程间通信-下/" class="title">
-      进程间通信(三)
-    </a>
-  </li>
-
-  <li>
-    <span class="date">
-      2018-10-11
-    </span>
-    <a href="/2018/10/11/进程池/" class="title">
-      进程池
-    </a>
-  </li>
-
-  <li>
-    <span class="date">
-      2018-10-11
-    </span>
-    <a href="/2018/10/11/进程间通信-上/" class="title">
-      进程间通信(一)
-    </a>
-  </li>
-
-  <li>
-    <span class="date">
-      2018-10-11
-    </span>
-    <a href="/2018/10/11/进程探究/" class="title">
-      进程探究
-    </a>
-  </li>
-
-  <li>
-    <span class="date">
-      2018-10-11
-    </span>
-    <a href="/2018/10/11/进程代码/" class="title">
-      进程代码
-    </a>
-  </li>
-
-  <li>
-    <span class="date">
-      2018-09-21
-    </span>
-    <a href="/2018/09/21/小时/" class="title">
-      小时
-    </a>
-  </li>
-
-
-          </ul>
-        
-      </div>
+        </div>
+      </article>
     </div>
+    <!-- Pre or Next -->
+    
+	<div class="container" >
+           <ul class="pager">
+    	     
+           
+              <li class="next">
+              <a href="/2018/10/11/进程间通信-补充/" rel="prev">上一篇</a>
+            </li>
+           
+          </ul>
+       </div>
+　　　　<!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">Comments</h1> -->
+
+  
+</section>
+
+
+    </div>
+   
+　　　　
   </div>
 </div>
 

@@ -3,6 +3,40 @@
   
     
     <entry>
+      <title>进程池</title>
+      <link href="/2018/10/11/%E8%BF%9B%E7%A8%8B%E6%B1%A0/"/>
+      <url>/2018/10/11/%E8%BF%9B%E7%A8%8B%E6%B1%A0/</url>
+      
+        <content type="html"><![CDATA[<h3 id="进程池子"><a href="#进程池子" class="headerlink" title="进程池子"></a>进程池子</h3><ul><li><p>当你成千上万的业务需要创建成千上万的进程时，我们可以提前定义一个进程池<br><--more--></--more--></p><ul><li><p>from multiprocessing import Pool</p></li><li><p>p = Pool(10) #进程池创建方式，类似空任务队列</p></li><li>p.apply(func,args) #阻塞<ul><li>func：func指明该进程池种的进程要工作的函数</li><li>args：不定长接收进程池中进程工作函数的参数</li></ul></li><li>p.apply_async(func,args) #非阻塞方式<ul><li>func：func指明该进程池种的进程要工作的函数</li><li>args：不定长接收进程池中进程工作函数的参数</li></ul></li><li>p.close() <ul><li>关闭进程池，不再接收新的任务了。</li></ul></li><li>p.join() **<ul><li>进程池里的进程资源要在关闭进程之后回收</li></ul></li><li>阻塞：单进程 | 串行 | 同步 | 多个进程可以排着队<ul><li>apply</li><li>同一时间只能有一个进程来工作，其他进程等待这个进程的工作函数有了返回结果才能开启工作。</li></ul></li><li>非阻塞：多进程 | 并发 | 异步<ul><li>apply_async</li><li>会在CPU核心数的基础上立即调用所有可用进程池中的进程资源来工作</li></ul></li></ul></li></ul><ul><li><p>apply：</p><ul><li><p>获取子进程返回值</p></li><li><p>直接获取这个函数的返回值即可</p></li></ul><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> var <span class="keyword">in</span> range(<span class="number">12</span>):</span><br><span class="line">res.append(p.apply(func=work,args=(var,)))</span><br></pre></td></tr></table></figure></li><li><p>ret = apply_async</p><ul><li>非阻塞多进程执行之后返回的是一个抽象的进程返回结果</li><li>我们需要再次对这个进程返回结果再实际获取才可以拿到进程池工作之后的返回值</li><li>ret.get() 拿到进程池进程执行之后的返回结果</li></ul></li><li><p>避免了进程多次创建而带来的效率上的损耗</p></li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 进程池 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>进程间通信(四)</title>
+      <link href="/2018/10/11/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1-%E8%A1%A5%E5%85%85/"/>
+      <url>/2018/10/11/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1-%E8%A1%A5%E5%85%85/</url>
+      
+        <content type="html"><![CDATA[<h1 id="共享内存的另外一种实现方式"><a href="#共享内存的另外一种实现方式" class="headerlink" title="共享内存的另外一种实现方式"></a>共享内存的另外一种实现方式</h1><h3 id="Array-共享数组"><a href="#Array-共享数组" class="headerlink" title="Array(共享数组)"></a>Array(共享数组)</h3><h3 id="Value-共享变量"><a href="#Value-共享变量" class="headerlink" title="Value(共享变量)"></a>Value(共享变量)</h3><a id="more"></a><ul><li><p>类似Array的共享数组</p></li><li><p>共享内存</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">有符号的 int类型  i</span><br></pre></td></tr></table></figure></li><li><p>from multiprocessing import Value</p><ul><li>Value(typecode_or_type, *args, lock=True)<ul><li>typecode_or_type：当前的数据类型 i</li><li>args: 为当前的value分配默认值的</li></ul></li></ul></li><li><p>v = Value(‘i’,0)</p><ul><li>v.value  获取到这个值</li><li>v.value = xxx  修改这个共享数据</li></ul></li></ul><h3 id="多种进程间通信的利弊总结"><a href="#多种进程间通信的利弊总结" class="headerlink" title="多种进程间通信的利弊总结"></a>多种进程间通信的利弊总结</h3><ul><li>Queue<ul><li>优点：<ul><li>支持所有Python中的对象</li><li>容易上手，q.put q.get</li><li>一定要判断清楚他的阻塞情况。一般都是阻塞。</li></ul></li><li>缺点：<ul><li>效率低一些</li><li>是会在数据访问的时候，不太安全，大并发下可能在非阻塞时拿取节奏是乱序的，那么造成数据混淆。</li></ul></li></ul></li><li>Pipe<ul><li>优点：<ul><li>相对要支持数据保护。</li></ul></li><li>缺点：<ul><li>一对一，多对一共享可以,多对多共享是会很乱的.注意理清管道使用顺序</li></ul></li></ul></li><li>Event<ul><li>优点<ul><li>可以在多进程里控制执行顺序</li><li>效率上要厉害一些</li></ul></li><li>缺点<ul><li>无法交流数据</li></ul></li></ul></li><li>Array 一个数组  </li><li>Value 一个值<ul><li>优点:<ul><li>来源于共享内存实现,效率很高</li><li>提供了数据的锁支持,维护了数据的安全性.<ul><li>安全的代价:有锁,并行变串行.</li></ul></li></ul></li><li>缺点:<ul><li>无法支持复杂数据类型</li></ul></li></ul></li></ul><h3 id="除去以上多进程通信的惯有方式"><a href="#除去以上多进程通信的惯有方式" class="headerlink" title="除去以上多进程通信的惯有方式"></a>除去以上多进程通信的惯有方式</h3><ul><li>文件<ul><li>pickle</li><li>文件读写指针在多进程访问的时候,彼此独立.</li></ul></li><li>数据库也可以做进程通信<ul><li>做语言的跨进程通信</li></ul></li><li>套接字<ul><li>Unix套接字 可以在多进程里通信</li></ul></li></ul><ul><li>键值对形式 字典</li><li>表</li></ul><p>OOP: 桌面软件:VC++ MFC</p><p>C++ QT Creater 跨平台 可以在windows下写一个软件 直接放到Linux下用 IOS 安卓</p><p>PyQT </p><h1 id="进程池"><a href="#进程池" class="headerlink" title="进程池"></a>进程池</h1><h1 id="进程同步"><a href="#进程同步" class="headerlink" title="进程同步"></a>进程同步</h1>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 进程间通信(四) </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>进程间通信(三)</title>
       <link href="/2018/10/11/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1-%E4%B8%8B/"/>
       <url>/2018/10/11/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1-%E4%B8%8B/</url>

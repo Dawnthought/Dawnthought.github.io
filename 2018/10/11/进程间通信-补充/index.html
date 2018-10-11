@@ -18,7 +18,7 @@
 
   <!--Open Graph Title-->
   
-      <meta property="og:title" content="进程间通信(三)"/>
+      <meta property="og:title" content="进程间通信(四)"/>
   
   <!--Open Graph Description-->
   
@@ -46,7 +46,7 @@
     </script>
   <!-- Title -->
   
-  <title>进程间通信(三) - 5小时的博客</title>
+  <title>进程间通信(四) - 5小时的博客</title>
 
 
   <link rel="shortcut icon" href="/favicon.ico">
@@ -147,7 +147,7 @@
         <!-- Title date & tags -->
         <div class="post-header">
           <h1 class="entry-title">
-            进程间通信(三)
+            进程间通信(四)
             
           </h1>
          
@@ -157,90 +157,107 @@
           </p>
         <!-- Post Main Content -->
         <div class="entry-content">
-          <ul>
-<li>并行：服务器程序的并行执行</li>
-<li>并发：业务劈天盖地的来了<ul>
-<li>并发是同时发起的请求<a id="more"></a></li>
-<li>服务支持高并发</li>
-</ul>
-</li>
-<li>程序实现并行</li>
-</ul>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">网络编程：预习一下TCP协议</span><br><span class="line">	<span class="comment">#看看网上关于DDOS攻击的Python实现代码</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>我通过进程间通信的方式，可以让一个数据被多个进程共享。</p>
-<p>临界资源:同一时间只能让一个任务来访问的；硬件设备，插拔设备的。</p>
-</blockquote>
-<h3 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h3><h3 id="Pipe"><a href="#Pipe" class="headerlink" title="Pipe"></a>Pipe</h3><h3 id="Event"><a href="#Event" class="headerlink" title="Event"></a>Event</h3><h3 id="Array、Value-共享内存"><a href="#Array、Value-共享内存" class="headerlink" title="Array、Value(共享内存)"></a>Array、Value(共享内存)</h3><ul>
-<li><p>底层C语言实现的，Linux内核的东西。效率非常高，但是支持性差</p>
-</li>
-<li><p>from multiprocessing import Array</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">a = Array(typecode_or_type,size_or_initializer,lock=True)</span><br><span class="line"></span><br><span class="line">typecode_or_type：数据类型</span><br><span class="line">	unsigned  signed </span><br><span class="line">chr:    b       B     <span class="number">8</span>位</span><br><span class="line">short:  h       H</span><br><span class="line">int:    i       I</span><br><span class="line">long:   l       L</span><br><span class="line">float:      f</span><br><span class="line">double:     d</span><br><span class="line">size_or_initializer：数据长度</span><br><span class="line">lock：当有一个进程在访问这个数据资源的时候，其他进程访问不了。</span><br><span class="line">	当lock为True时，我们可以在访问的时候，通过下面两个函数来保护数据的访问顺序：</span><br><span class="line">	a.acquire() 持锁</span><br><span class="line">	a.release() 释放锁</span><br><span class="line">Array共享数组，更安全的通信方式</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>创建出来的a是一个抽象的共享数组，那么可以通过类似列表切片的方式来实际展开其中数据。</p>
-</li>
-<li><p>short：短整型</p>
+          <h1 id="共享内存的另外一种实现方式"><a href="#共享内存的另外一种实现方式" class="headerlink" title="共享内存的另外一种实现方式"></a>共享内存的另外一种实现方式</h1><h3 id="Array-共享数组"><a href="#Array-共享数组" class="headerlink" title="Array(共享数组)"></a>Array(共享数组)</h3><h3 id="Value-共享变量"><a href="#Value-共享变量" class="headerlink" title="Value(共享变量)"></a>Value(共享变量)</h3><a id="more"></a>
 <ul>
-<li>有符号的：-32768 ~ 32767</li>
-<li>无符号的:0~65535</li>
-</ul>
+<li><p>类似Array的共享数组</p>
 </li>
-<li><p>int：整型 </p>
+<li><p>共享内存</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">有符号的 int类型  i</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>from multiprocessing import Value</p>
 <ul>
-<li>64位电脑：<ul>
-<li>32位长度</li>
-<li>有符号的：-2147483648 ~ 2147483647</li>
-<li>无符的号：0~4294967295</li>
-</ul>
-</li>
-<li>32位电脑：<ul>
-<li>16位长度</li>
-<li>有符号的：-32768 ~ 32767</li>
-<li>无符号的:0~65535</li>
+<li>Value(typecode_or_type, *args, lock=True)<ul>
+<li>typecode_or_type：当前的数据类型 i</li>
+<li>args: 为当前的value分配默认值的</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p>long：长整形 一般是你的计算机有多长 long就会有多长</p>
+<li><p>v = Value(‘i’,0)</p>
 <ul>
-<li>64位：<ul>
-<li>有符号的：-(2 <strong> 63) ~   +(2</strong>63 - 1)</li>
-<li>无符号的：0 ~ (2**64) -1</li>
-</ul>
-</li>
-<li>32位：<ul>
-<li>有符号的：-(2 <strong> 31) ~   +(2</strong>63 - 1)</li>
-<li>无符号的：0 ~ (2**64) -1</li>
+<li>v.value  获取到这个值</li>
+<li>v.value = xxx  修改这个共享数据</li>
 </ul>
 </li>
 </ul>
+<h3 id="多种进程间通信的利弊总结"><a href="#多种进程间通信的利弊总结" class="headerlink" title="多种进程间通信的利弊总结"></a>多种进程间通信的利弊总结</h3><ul>
+<li>Queue<ul>
+<li>优点：<ul>
+<li>支持所有Python中的对象</li>
+<li>容易上手，q.put q.get</li>
+<li>一定要判断清楚他的阻塞情况。一般都是阻塞。</li>
+</ul>
 </li>
-<li><p>chr：字符型</p>
+<li>缺点：<ul>
+<li>效率低一些</li>
+<li>是会在数据访问的时候，不太安全，大并发下可能在非阻塞时拿取节奏是乱序的，那么造成数据混淆。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Pipe<ul>
+<li>优点：<ul>
+<li>相对要支持数据保护。</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>一对一，多对一共享可以,多对多共享是会很乱的.注意理清管道使用顺序</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Event<ul>
+<li>优点<ul>
+<li>可以在多进程里控制执行顺序</li>
+<li>效率上要厉害一些</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>无法交流数据</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Array 一个数组  </li>
+<li>Value 一个值<ul>
+<li>优点:<ul>
+<li>来源于共享内存实现,效率很高</li>
+<li>提供了数据的锁支持,维护了数据的安全性.<ul>
+<li>安全的代价:有锁,并行变串行.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>缺点:<ul>
+<li>无法支持复杂数据类型</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="除去以上多进程通信的惯有方式"><a href="#除去以上多进程通信的惯有方式" class="headerlink" title="除去以上多进程通信的惯有方式"></a>除去以上多进程通信的惯有方式</h3><ul>
+<li>文件<ul>
+<li>pickle</li>
+<li>文件读写指针在多进程访问的时候,彼此独立.</li>
+</ul>
+</li>
+<li>数据库也可以做进程通信<ul>
+<li>做语言的跨进程通信</li>
+</ul>
+</li>
+<li>套接字<ul>
+<li>Unix套接字 可以在多进程里通信</li>
+</ul>
+</li>
+</ul>
 <ul>
-<li>8位<ul>
-<li>无符号：0~255 <ul>
-<li>Ascii码表 </li>
-<li>文件系统的命名</li>
-<li>IP地址</li>
+<li>键值对形式 字典</li>
+<li>表</li>
 </ul>
-</li>
-<li>无符号：-128~127</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>float：单精度浮点型</p>
-<ul>
-<li>32bit</li>
-</ul>
-</li>
-<li><p>double float：双精度浮点型</p>
-<ul>
-<li>64bit</li>
-</ul>
-</li>
-</ul>
-
+<p>OOP: 桌面软件:VC++ MFC</p>
+<p>C++ QT Creater 跨平台 可以在windows下写一个软件 直接放到Linux下用 IOS 安卓</p>
+<p>PyQT </p>
+<h1 id="进程池"><a href="#进程池" class="headerlink" title="进程池"></a>进程池</h1><h1 id="进程同步"><a href="#进程同步" class="headerlink" title="进程同步"></a>进程同步</h1>
         </div>
       </article>
     </div>
@@ -250,12 +267,12 @@
            <ul class="pager">
     	     
       	     <li class="previous">
-              <a href="/2018/10/11/进程间通信-补充/" rel="prev">下一篇</a>
+              <a href="/2018/10/11/进程池/" rel="prev">下一篇</a>
              </li>
            
            
               <li class="next">
-              <a href="/2018/10/11/进程间通信-中/" rel="prev">上一篇</a>
+              <a href="/2018/10/11/进程间通信-下/" rel="prev">上一篇</a>
             </li>
            
           </ul>
