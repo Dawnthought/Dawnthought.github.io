@@ -18,7 +18,7 @@
 
   <!--Open Graph Title-->
   
-      <meta property="og:title" content="5小时的博客"/>
+      <meta property="og:title" content="进程代码"/>
   
   <!--Open Graph Description-->
   
@@ -28,7 +28,7 @@
   <meta property="og:site_name" content="5小时的博客"/>
   <!--Type page-->
   
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content="article" />
   
   <!--Page Cover-->
   
@@ -46,7 +46,7 @@
     </script>
   <!-- Title -->
   
-  <title>Archives: 2018/10 - 5小时的博客</title>
+  <title>进程代码 - 5小时的博客</title>
 
 
   <link rel="shortcut icon" href="/favicon.ico">
@@ -139,56 +139,64 @@
 
 
   <!-- Main Content -->
-  
-
-<!-- Main Content -->
-<div class="archive content-area">
-  <div class="container">
-    <h1 class="entry-title">2018/10</h1>
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <!-- Use lodash to classify posts. See https://lodash.com/docs#groupBy
-          1. group site.posts by year
-          2. sort posts-in-one-year by Month and Day
-        -->
-        
-
-        
-          <h2 class="year">2018</h2>
-          <ul class="list">
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            进程代码
             
-  <li>
-    <span class="date">
-      2018-10-11
-    </span>
-    <a href="/2018/10/11/进程探究/" class="title">
-      进程探究
-    </a>
-  </li>
-
-  <li>
-    <span class="date">
-      2018-10-11
-    </span>
-    <a href="/2018/10/11/进程代码/" class="title">
-      进程代码
-    </a>
-  </li>
-
-  <li>
-    <span class="date">
-      2018-09-21
-    </span>
-    <a href="/2018/09/21/小时/" class="title">
-      小时
-    </a>
-  </li>
-
-
-          </ul>
-        
-      </div>
+          </h1>
+         
+        </div>
+         <p class="a-posted-on">
+          2018-10-11
+          </p>
+        <!-- Post Main Content -->
+        <div class="entry-content">
+          <ul>
+<li>Python实现多进程的方式 ： 创建多子进程</li>
+<li>os.fork()<ul>
+<li>属于C语言的创建内核方式，遗留在了Python种。</li>
+<li>属于Linux平台下才可以使用。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">这是父进程: <span class="number">25284</span></span><br><span class="line">这是子进程: <span class="number">25285</span></span><br><span class="line">---------------------</span><br><span class="line">这是父进程: <span class="number">25284</span>  原始父进程</span><br><span class="line">---------------------</span><br><span class="line">这是父进程: <span class="number">25285</span>  原始子进程</span><br><span class="line">---------------------</span><br><span class="line">新的子进程: <span class="number">25286</span>  继续自己开启新的子进程</span><br><span class="line">---------------------</span><br><span class="line">新的子进程: <span class="number">25287</span>  继续自己开启新的子进程</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">os.getpid()</span><br><span class="line">返回当前进程的PID值</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">os.waitpid(pid,options)</span><br><span class="line">	pid：需要被回收的子进程ID值</span><br><span class="line">	options: 默认为0，用来表示回收结果</span><br><span class="line">os.wait()</span><br><span class="line">	等待所有子进程结束</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">os.fork()</span><br><span class="line">	父进程：返回创建好的子进程PID</span><br><span class="line">	子进程：返回0</span><br></pre></td></tr></table></figure>
+        </div>
+      </article>
     </div>
+    <!-- Pre or Next -->
+    
+	<div class="container" >
+           <ul class="pager">
+    	     
+           
+              <li class="next">
+              <a href="/2018/10/11/进程探究/" rel="prev">上一篇</a>
+            </li>
+           
+          </ul>
+       </div>
+　　　　<!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">Comments</h1> -->
+
+  
+</section>
+
+
+    </div>
+   
+　　　　
   </div>
 </div>
 
