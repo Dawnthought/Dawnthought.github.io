@@ -3,6 +3,40 @@
   
     
     <entry>
+      <title>线程池</title>
+      <link href="/2018/10/11/%E7%BA%BF%E7%A8%8B%E6%B1%A0/"/>
+      <url>/2018/10/11/%E7%BA%BF%E7%A8%8B%E6%B1%A0/</url>
+      
+        <content type="html"><![CDATA[<h3 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h3><a id="more"></a><ul><li>from multiprocessing.pool import ThreadPool<ul><li>Linux下的线程，其实是进程做了共享内存。</li><li>线程和进程的区别：<ul><li>线程共享</li><li>进程独立</li></ul></li><li>tp = Threadpool(10) #创建了十个线程<ul><li>tp.apply(func,args) 阻塞方式执行任务函数</li><li>tp.apply_async(func,args) 非阻塞方式执行函数</li></ul></li><li>tp.close()<ul><li>线程池关闭，不再接收新的任务函数了</li></ul></li><li>tp.join()<ul><li>回收线程池里的资源</li></ul></li><li>tp.terminate()<ul><li>直接关闭线程池，并终止所有任务</li></ul></li></ul></li><li>创建进程<ul><li>from multiprocessing import Process</li><li>Process(target,args)</li></ul></li><li>创建线程<ul><li>from threading import Thread</li><li>Thread(target,args)</li></ul></li><li>进程池：<ul><li>from multiprocessing import Pool<ul><li>p = Pool(4)</li><li>res = p.apply()<ul><li>一定要等待进程执行完成之后，我才会继续开启下一个</li><li>res 就是真正的返回值</li></ul></li><li>res  = p.apply_async()<ul><li>res 接收到的是一个抽象的进程执行返回结果</li><li>res.get() 提取对应返回结果</li></ul></li></ul></li></ul></li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 线程池 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>线程</title>
+      <link href="/2018/10/11/%E7%BA%BF%E7%A8%8B/"/>
+      <url>/2018/10/11/%E7%BA%BF%E7%A8%8B/</url>
+      
+        <content type="html"><![CDATA[<h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><a id="more"></a><blockquote><p>和进程类似，只不过比进程更轻量，</p><p>必须要有一个主进程来开启</p><p>父进程里有的东西，我的子线程之间都会共享</p><p>线程的作用环境 只在父进程里</p><p>线程之不像进程进程切换那样浪费时间；</p></blockquote><ul><li>windows：<ul><li>线程是CPU执行的最小单位</li><li>进程是CPU分配资源的最小单位</li></ul></li><li>Linux下的线程：是子进程之间做了内存共享(数据通信)</li><li>没有线程间通信</li><li>创建线程：<ul><li>_thread 老版本的有<ul><li>偏底层，支持的控制函数比较少</li><li>_thread.start_new_thread(func,args,[kwargs])<ul><li>func：线程的工作函数</li><li>args、kwargs：工作函数需要接收的参数，以不定长形式</li></ul></li></ul></li><li><strong>threading</strong> 新版本<ul><li>GIL锁<ul><li>控制线程安全，C语言<ul><li>官方社区已经在努力的改进了。</li></ul></li><li>同时只有一个线程能工作，其他线程看着。</li><li>一次只有一个人进公厕的大门，然后公厕有四个坑。</li><li>IO等待的时候，GIL锁会自动释放<ul><li>我便秘了。但是我起来了，让下一个人先上。</li></ul></li></ul></li><li>from threading import Thread<ul><li>t = Thread(target=None,name=None,args=(,),kwargs={})</li><li>t.start() 开启线程</li><li>t.join()  回收线程资源</li><li>t.isAlive() t.is_alive() 判断线程是否处于激活状态</li></ul></li><li></li></ul></li></ul></li><li><p>线程同步：</p><ul><li>锁：为了维护执行顺序，维护了数据的访问顺序，但是本身还是一个单进程<ul><li>from threading import Lock<ul><li>lock.acquire() 加锁</li><li>lock.release() 释放</li></ul></li></ul></li><li>信号量：<ul><li>from threading import Semaphore<ul><li>s = Semaphore</li><li>信号量：不是同一时间支持多个线程来工作<ul><li>而是支持 在一个线程执行到一会儿的时候，可以切换到另外一个持有信号量的线程上</li></ul></li></ul></li></ul></li><li>Queue安全队列<ul><li>内部在数据上实现了锁</li><li>from queue import Queue</li><li>q = Queue(num)<ul><li>q.size()</li><li>q.empty()</li><li>q.full()</li><li>q.get(block=True)  阻塞行为从这个共享队列中取值</li><li>q.put(block=True)  阻塞行为从这个共享队列中放值</li></ul></li></ul></li></ul></li><li><p>IO密集：我的程序可能需要经常的IO操作（读写文件，SQL，SOCKET）</p><ul><li>GIL锁不会在IO操作的时候，也傻呼呼等待。</li><li>一旦遇到IO等待，那么GIL锁会释放，给了其他线程执行的权力。</li><li>固态硬盘，不需要IO等待 数据的处理时间大于IO等待的时间 IO次数特别频繁 <ul><li>多进程 + 多线程</li><li>多线程 去读取文件 -&gt;  多进程 去处理  -&gt;</li></ul></li><li>IO等待：<ul><li>文件IO：文件读写是比较块的</li><li><strong>网络IO：</strong>比较慢的</li></ul></li></ul></li><li>SSH暴力破解。运维要SSH ansible，拿到你的ROOT</li><li>CPU密集：多用多进程<ul><li>程序一般多计算 + - * / 。</li><li>少IO等待。</li></ul></li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 线程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>进程池</title>
       <link href="/2018/10/11/%E8%BF%9B%E7%A8%8B%E6%B1%A0/"/>
       <url>/2018/10/11/%E8%BF%9B%E7%A8%8B%E6%B1%A0/</url>
@@ -133,6 +167,23 @@
         <tags>
             
             <tag> 进程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>了解线程进程</title>
+      <link href="/2018/10/10/%E4%BA%86%E8%A7%A3%E7%BA%BF%E7%A8%8B%E8%BF%9B%E7%A8%8B/"/>
+      <url>/2018/10/10/%E4%BA%86%E8%A7%A3%E7%BA%BF%E7%A8%8B%E8%BF%9B%E7%A8%8B/</url>
+      
+        <content type="html"><![CDATA[<h1 id="了解线程和进程"><a href="#了解线程和进程" class="headerlink" title="了解线程和进程"></a>了解线程和进程</h1><h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><a id="more"></a><ul><li>程序：磁盘上的可执行二进制文件，并无运行状态。</li><li>进程：就是一个正在运行的任务实例（存活在内存里）。</li><li><p>获取当前电脑的CPU核心数：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pip install psutil </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> psutil</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>psutil.cpu_count()</span><br><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure><ul><li>我的电脑CPU只有一个核心：我同时可以工作几个任务<ul><li>核心数对应的是计算机同时可以执行的最大任务数</li><li>CPU切换执行每一个任务，100个任务；中断的执行（切换）速度非常快，人的肉眼是捕捉不到的。</li></ul></li><li>并发：同一时刻可以有多个函数或者多个任务在我的程序里执行；效率更高。<ul><li>apache/nginx：Web服务器，并发服务器。</li></ul></li><li>单进程：我的程序，就是从上到下，这样执行；效率其实不高</li><li>CPU高 75 - 80 <ul><li>检查进程</li><li>TCP连接数，Web服务(FTP，webSocket、SQL链接)，TCP链接<ul><li>没有正经的完成三次握手</li></ul></li><li>文件占用太多：打开的文件个数太多，文件处于IO等待状态，磁盘不行了；<ul><li>CPU在处于等待文件读取，1K，CPU在等待IO的过程其实也是真正的工作</li><li>一个人在上班的时候，手头没活。</li></ul></li><li>虚拟内存开小了 SWAP 交换分区<ul><li>逻辑内存：4G</li><li>魔兽世界：50G</li><li>磁盘额外设置一块空间，暂时保存内存中不处理的数据<ul><li>8G ：20G  2倍</li><li>固态：SSD 1T 2-3万左右</li></ul></li></ul></li></ul></li><li>线程：轻量级的进程</li><li>一个任务会由多个进程同时配合执行。</li><li>多进程：<ul><li>主要的程序会根据自己程序内部的功能去细节去分化新的进程来完成。</li><li>任务分化成多个主进程来执行，这就是多进程第一种。</li><li>默认的进程之间<strong>数据彼此独立</strong>，不管是父子进程还是多主进程。</li><li>进程之间彼此切换，效率会降低。</li></ul></li><li>多线程：子线程<ul><li>必须要有一个主进程来创建。</li><li>线程共享主进程内所有的数据。</li><li>多线程处理数据，会造成数据混淆。</li><li>GIL锁：Python强制要求线程彼此执行的时候需要维持数据。</li><li>线程不需要CPU拿取和释放资源；</li><li>多线程是一个轻量级的进程，在操作系统下不会单独的来执行一个线程来作为任务<ul><li>线程必须要基于一个主进程来创建的</li></ul></li></ul></li><li>Linux下面：经常用的架构，就是多进程。</li><li>多线程只是一个功能（小数据量的）可能会采用的。</li></ul></li></ul><ul><li><p>Linux：ps命令</p><ul><li>ps命令的返回值</li></ul></li></ul><p>1-5 都有课</p><p>1，3，5：上两个</p><p>2，4：1.5个小时</p><p>网络编程：</p><p>​    * 聊天室：支持群聊</p><p>​    * 聊天室：支持一对一的</p><p>​    * FTP服务器功能代码</p><p>​        &gt; 走socket解析FTP21指令</p><p>​    * SMTP服务器功能代码 简单文本传输协议</p><p>​        &gt; 如何搭建SMTP 纯代码 走socket 解析POP3协议</p><p>​    * HTTP协议 超文本传输协议</p><p>​        &gt; 实现浏览器</p><p>​        &gt; 如何实现登陆验证 走socket</p><ul><li>select：apache</li><li>epoll：nginx</li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 了解线程进程 </tag>
             
         </tags>
       

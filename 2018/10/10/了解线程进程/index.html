@@ -18,7 +18,7 @@
 
   <!--Open Graph Title-->
   
-      <meta property="og:title" content="进程探究"/>
+      <meta property="og:title" content="了解线程进程"/>
   
   <!--Open Graph Description-->
   
@@ -46,7 +46,7 @@
     </script>
   <!-- Title -->
   
-  <title>进程探究 - 5小时的博客</title>
+  <title>了解线程进程 - 5小时的博客</title>
 
 
   <link rel="shortcut icon" href="/favicon.ico">
@@ -147,147 +147,105 @@
         <!-- Title date & tags -->
         <div class="post-header">
           <h1 class="entry-title">
-            进程探究
+            了解线程进程
             
           </h1>
          
         </div>
          <p class="a-posted-on">
-          2018-10-11
+          2018-10-10
           </p>
         <!-- Post Main Content -->
         <div class="entry-content">
-          <ul>
-<li>进程：这是一个在内存中运行的任务实例<a id="more"></a></li>
-<li>Linux下进程属性：<ul>
-<li>进程拥有自己独立的PID（身份证号）<ul>
-<li>0 ~ 65535 PID是有限的</li>
-<li>当你一台Linux有了超过65535个进程，第65536个进程 无法启动！</li>
-</ul>
-</li>
-<li>独立的内存空间，独立的地址。</li>
-<li>PID：<ul>
-<li>0：这个进程是真正的调度进程(idle进程)，是系统初始化的第一个进程，是所有其他进程的祖先！</li>
-<li>1：这个进程是Init进程，后续的系统启动，由0进程创建，第一个子进程，完成剩余的系统引导工作。</li>
-<li>2：线程/进程 管理进程</li>
-</ul>
-</li>
-<li>PCB控制块 process control block<ul>
-<li>进程PCB是用来管理进程，维护进程属性的一个数据块</li>
-<li>记录进程中的属性特征，进程的运行状态</li>
-<li>没有合法PCB的进程，不会被操作系统所识别管理</li>
-</ul>
-</li>
-<li>PCB进程控制块中主要有以下：<ul>
-<li>进程标识符 PID。</li>
-<li>调度信息：进程优先级</li>
-<li>进程状态：挂起，就绪，执行，中断，僵尸。</li>
-<li>进程使用的内存空间：文件，套接字（socket），网卡，硬件设备。</li>
-<li>处理器信息：计数器，寄存器，指针。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<hr>
+          <h1 id="了解线程和进程"><a href="#了解线程和进程" class="headerlink" title="了解线程和进程"></a>了解线程和进程</h1><h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><a id="more"></a>
 <ul>
-<li>进程的状态：<ul>
-<li><strong>R</strong>：就绪/运行 READY RUNNING<ul>
-<li>实际在CPU上运行的进程，可以被称作运行状态</li>
-<li>接下来要执行的进程，处于就绪状态，那么也会被称作R</li>
-</ul>
-</li>
-<li><strong>S</strong>：可中断睡眠状态<ul>
-<li>进程去等待资源，等待别人链接，等待读取文件内容，等待打开硬件设备，CPU资源不够用</li>
-<li>等待的进程，有专门的任务队列维护，通过一定的事件可以重新激活这些进程进入运行状态R</li>
-</ul>
-</li>
-<li>D：不可中断睡眠状态<ul>
-<li>一般是一些内核进程，Kill -9无法直接杀死，并且无法直接唤醒</li>
-<li>这样的进程也处于睡眠状态</li>
-<li>这种睡眠状态是为了保护一些硬件资源，保护一些设备。</li>
-</ul>
-</li>
-<li>T：暂停状态<ul>
-<li>调试程序，打断点</li>
-</ul>
-</li>
-<li>X：停止状态</li>
-<li><strong>Z</strong>：进程在退出时，必须要经过<strong>僵尸状态</strong>。<ul>
-<li>每个进程在退出的时候，都会释放掉内存，但是如果父进程并没有对他做PCB释放，</li>
-<li>这个PCB进程控制块就会保留下来，会一致占用PID</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<hr>
+<li>程序：磁盘上的可执行二进制文件，并无运行状态。</li>
+<li>进程：就是一个正在运行的任务实例（存活在内存里）。</li>
+<li><p>获取当前电脑的CPU核心数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pip install psutil </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> psutil</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>psutil.cpu_count()</span><br><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li><p>僵尸进程：</p>
-<ul>
-<li>父进程创建子进程，但是并没有及时回收工作完毕的子进程</li>
-<li>没有被释放资源的子进程就会被称作僵尸进程</li>
-<li>在于PCB进程控制块无法及时得到释放，所以会导致无法创建新的进程，占用了PID资源。</li>
-<li>注意：开发者要注意回收僵尸进程，没人会帮你释放僵尸进程。</li>
+<li>我的电脑CPU只有一个核心：我同时可以工作几个任务<ul>
+<li>核心数对应的是计算机同时可以执行的最大任务数</li>
+<li>CPU切换执行每一个任务，100个任务；中断的执行（切换）速度非常快，人的肉眼是捕捉不到的。</li>
+</ul>
+</li>
+<li>并发：同一时刻可以有多个函数或者多个任务在我的程序里执行；效率更高。<ul>
+<li>apache/nginx：Web服务器，并发服务器。</li>
+</ul>
+</li>
+<li>单进程：我的程序，就是从上到下，这样执行；效率其实不高</li>
+<li>CPU高 75 - 80 <ul>
+<li>检查进程</li>
+<li>TCP连接数，Web服务(FTP，webSocket、SQL链接)，TCP链接<ul>
+<li>没有正经的完成三次握手</li>
+</ul>
+</li>
+<li>文件占用太多：打开的文件个数太多，文件处于IO等待状态，磁盘不行了；<ul>
+<li>CPU在处于等待文件读取，1K，CPU在等待IO的过程其实也是真正的工作</li>
+<li>一个人在上班的时候，手头没活。</li>
+</ul>
+</li>
+<li>虚拟内存开小了 SWAP 交换分区<ul>
+<li>逻辑内存：4G</li>
+<li>魔兽世界：50G</li>
+<li>磁盘额外设置一块空间，暂时保存内存中不处理的数据<ul>
+<li>8G ：20G  2倍</li>
+<li>固态：SSD 1T 2-3万左右</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>线程：轻量级的进程</li>
+<li>一个任务会由多个进程同时配合执行。</li>
+<li>多进程：<ul>
+<li>主要的程序会根据自己程序内部的功能去细节去分化新的进程来完成。</li>
+<li>任务分化成多个主进程来执行，这就是多进程第一种。</li>
+<li>默认的进程之间<strong>数据彼此独立</strong>，不管是父子进程还是多主进程。</li>
+<li>进程之间彼此切换，效率会降低。</li>
+</ul>
+</li>
+<li>多线程：子线程<ul>
+<li>必须要有一个主进程来创建。</li>
+<li>线程共享主进程内所有的数据。</li>
+<li>多线程处理数据，会造成数据混淆。</li>
+<li>GIL锁：Python强制要求线程彼此执行的时候需要维持数据。</li>
+<li>线程不需要CPU拿取和释放资源；</li>
+<li>多线程是一个轻量级的进程，在操作系统下不会单独的来执行一个线程来作为任务<ul>
+<li>线程必须要基于一个主进程来创建的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Linux下面：经常用的架构，就是多进程。</li>
+<li>多线程只是一个功能（小数据量的）可能会采用的。</li>
 </ul>
 </li>
 </ul>
 <ul>
-<li><p>孤儿进程：</p>
+<li><p>Linux：ps命令</p>
 <ul>
-<li>父进程先结束了</li>
-<li>还在执行的子进程没人管了。</li>
-<li>孤儿进程就由此诞生了</li>
-<li>孤儿进程会被INIT进程接管，然后完成之后，INIT进程帮你回收。</li>
+<li>ps命令的返回值</li>
 </ul>
 </li>
 </ul>
-<hr>
+<p>1-5 都有课</p>
+<p>1，3，5：上两个</p>
+<p>2，4：1.5个小时</p>
+<p>网络编程：</p>
+<p>​    * 聊天室：支持群聊</p>
+<p>​    * 聊天室：支持一对一的</p>
+<p>​    * FTP服务器功能代码</p>
+<p>​        &gt; 走socket解析FTP21指令</p>
+<p>​    * SMTP服务器功能代码 简单文本传输协议</p>
+<p>​        &gt; 如何搭建SMTP 纯代码 走socket 解析POP3协议</p>
+<p>​    * HTTP协议 超文本传输协议</p>
+<p>​        &gt; 实现浏览器</p>
+<p>​        &gt; 如何实现登陆验证 走socket</p>
 <ul>
-<li><p>进程状态下一级别：</p>
-<ul>
-<li><p>s：进程的会话负责人</p>
-</li>
-<li><p>&lt;：进程有高优先级</p>
-</li>
-<li><p>N：进程有低优先级</p>
-</li>
-<li><p>l：具备多线程的进程</p>
-</li>
-<li><p>+：位于后台的进程</p>
-</li>
-</ul>
-</li>
-</ul>
-<hr>
-<ul>
-<li><p>Nice值：Linux进程优先级 整数</p>
-<ul>
-<li>权限：-20 - +19</li>
-<li>数字越小，优先级越高</li>
-<li>只有超级用户可有把进程优先级设置为负数</li>
-</ul>
-</li>
-<li><p>VSZ：进程占用的虚拟内存大小</p>
-</li>
-<li><p>RSS：这个进程占用的固定内存大小</p>
-</li>
-<li><p>PRI/NI：进程优先级</p>
-</li>
-<li><p>TTY：打开的虚拟终端</p>
-</li>
-<li><p>PPID：当前进程的父进程ID</p>
-</li>
-<li><p>COMMAND：开启这个进程的命令</p>
-</li>
-<li><p>USER：开启进程的用户（表示了当前进程有什么样的权利）</p>
-</li>
-<li><p>F：进程旗标(process flag)</p>
-<ul>
-<li>进程的权限</li>
-<li>4：ROOT权限</li>
-</ul>
-</li>
+<li>select：apache</li>
+<li>epoll：nginx</li>
 </ul>
 
         </div>
@@ -299,12 +257,12 @@
            <ul class="pager">
     	     
       	     <li class="previous">
-              <a href="/2018/10/11/进程代码/" rel="prev">下一篇</a>
+              <a href="/2018/10/11/进程探究/" rel="prev">下一篇</a>
              </li>
            
            
               <li class="next">
-              <a href="/2018/10/10/了解线程进程/" rel="prev">上一篇</a>
+              <a href="/2018/09/21/小时/" rel="prev">上一篇</a>
             </li>
            
           </ul>

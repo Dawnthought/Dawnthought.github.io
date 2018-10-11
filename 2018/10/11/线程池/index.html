@@ -18,7 +18,7 @@
 
   <!--Open Graph Title-->
   
-      <meta property="og:title" content="进程探究"/>
+      <meta property="og:title" content="线程池"/>
   
   <!--Open Graph Description-->
   
@@ -46,7 +46,7 @@
     </script>
   <!-- Title -->
   
-  <title>进程探究 - 5小时的博客</title>
+  <title>线程池 - 5小时的博客</title>
 
 
   <link rel="shortcut icon" href="/favicon.ico">
@@ -147,7 +147,7 @@
         <!-- Title date & tags -->
         <div class="post-header">
           <h1 class="entry-title">
-            进程探究
+            线程池
             
           </h1>
          
@@ -157,135 +157,59 @@
           </p>
         <!-- Post Main Content -->
         <div class="entry-content">
-          <ul>
-<li>进程：这是一个在内存中运行的任务实例<a id="more"></a></li>
-<li>Linux下进程属性：<ul>
-<li>进程拥有自己独立的PID（身份证号）<ul>
-<li>0 ~ 65535 PID是有限的</li>
-<li>当你一台Linux有了超过65535个进程，第65536个进程 无法启动！</li>
-</ul>
-</li>
-<li>独立的内存空间，独立的地址。</li>
-<li>PID：<ul>
-<li>0：这个进程是真正的调度进程(idle进程)，是系统初始化的第一个进程，是所有其他进程的祖先！</li>
-<li>1：这个进程是Init进程，后续的系统启动，由0进程创建，第一个子进程，完成剩余的系统引导工作。</li>
-<li>2：线程/进程 管理进程</li>
-</ul>
-</li>
-<li>PCB控制块 process control block<ul>
-<li>进程PCB是用来管理进程，维护进程属性的一个数据块</li>
-<li>记录进程中的属性特征，进程的运行状态</li>
-<li>没有合法PCB的进程，不会被操作系统所识别管理</li>
-</ul>
-</li>
-<li>PCB进程控制块中主要有以下：<ul>
-<li>进程标识符 PID。</li>
-<li>调度信息：进程优先级</li>
-<li>进程状态：挂起，就绪，执行，中断，僵尸。</li>
-<li>进程使用的内存空间：文件，套接字（socket），网卡，硬件设备。</li>
-<li>处理器信息：计数器，寄存器，指针。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<hr>
+          <h3 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h3><a id="more"></a>
 <ul>
-<li>进程的状态：<ul>
-<li><strong>R</strong>：就绪/运行 READY RUNNING<ul>
-<li>实际在CPU上运行的进程，可以被称作运行状态</li>
-<li>接下来要执行的进程，处于就绪状态，那么也会被称作R</li>
+<li>from multiprocessing.pool import ThreadPool<ul>
+<li>Linux下的线程，其实是进程做了共享内存。</li>
+<li>线程和进程的区别：<ul>
+<li>线程共享</li>
+<li>进程独立</li>
 </ul>
 </li>
-<li><strong>S</strong>：可中断睡眠状态<ul>
-<li>进程去等待资源，等待别人链接，等待读取文件内容，等待打开硬件设备，CPU资源不够用</li>
-<li>等待的进程，有专门的任务队列维护，通过一定的事件可以重新激活这些进程进入运行状态R</li>
+<li>tp = Threadpool(10) #创建了十个线程<ul>
+<li>tp.apply(func,args) 阻塞方式执行任务函数</li>
+<li>tp.apply_async(func,args) 非阻塞方式执行函数</li>
 </ul>
 </li>
-<li>D：不可中断睡眠状态<ul>
-<li>一般是一些内核进程，Kill -9无法直接杀死，并且无法直接唤醒</li>
-<li>这样的进程也处于睡眠状态</li>
-<li>这种睡眠状态是为了保护一些硬件资源，保护一些设备。</li>
+<li>tp.close()<ul>
+<li>线程池关闭，不再接收新的任务函数了</li>
 </ul>
 </li>
-<li>T：暂停状态<ul>
-<li>调试程序，打断点</li>
+<li>tp.join()<ul>
+<li>回收线程池里的资源</li>
 </ul>
 </li>
-<li>X：停止状态</li>
-<li><strong>Z</strong>：进程在退出时，必须要经过<strong>僵尸状态</strong>。<ul>
-<li>每个进程在退出的时候，都会释放掉内存，但是如果父进程并没有对他做PCB释放，</li>
-<li>这个PCB进程控制块就会保留下来，会一致占用PID</li>
+<li>tp.terminate()<ul>
+<li>直接关闭线程池，并终止所有任务</li>
 </ul>
 </li>
 </ul>
 </li>
-</ul>
-<hr>
-<ul>
-<li><p>僵尸进程：</p>
-<ul>
-<li>父进程创建子进程，但是并没有及时回收工作完毕的子进程</li>
-<li>没有被释放资源的子进程就会被称作僵尸进程</li>
-<li>在于PCB进程控制块无法及时得到释放，所以会导致无法创建新的进程，占用了PID资源。</li>
-<li>注意：开发者要注意回收僵尸进程，没人会帮你释放僵尸进程。</li>
+<li>创建进程<ul>
+<li>from multiprocessing import Process</li>
+<li>Process(target,args)</li>
 </ul>
 </li>
-</ul>
-<ul>
-<li><p>孤儿进程：</p>
-<ul>
-<li>父进程先结束了</li>
-<li>还在执行的子进程没人管了。</li>
-<li>孤儿进程就由此诞生了</li>
-<li>孤儿进程会被INIT进程接管，然后完成之后，INIT进程帮你回收。</li>
+<li>创建线程<ul>
+<li>from threading import Thread</li>
+<li>Thread(target,args)</li>
 </ul>
 </li>
+<li>进程池：<ul>
+<li>from multiprocessing import Pool<ul>
+<li>p = Pool(4)</li>
+<li>res = p.apply()<ul>
+<li>一定要等待进程执行完成之后，我才会继续开启下一个</li>
+<li>res 就是真正的返回值</li>
 </ul>
-<hr>
-<ul>
-<li><p>进程状态下一级别：</p>
-<ul>
-<li><p>s：进程的会话负责人</p>
 </li>
-<li><p>&lt;：进程有高优先级</p>
-</li>
-<li><p>N：进程有低优先级</p>
-</li>
-<li><p>l：具备多线程的进程</p>
-</li>
-<li><p>+：位于后台的进程</p>
-</li>
+<li>res  = p.apply_async()<ul>
+<li>res 接收到的是一个抽象的进程执行返回结果</li>
+<li>res.get() 提取对应返回结果</li>
 </ul>
 </li>
 </ul>
-<hr>
-<ul>
-<li><p>Nice值：Linux进程优先级 整数</p>
-<ul>
-<li>权限：-20 - +19</li>
-<li>数字越小，优先级越高</li>
-<li>只有超级用户可有把进程优先级设置为负数</li>
-</ul>
 </li>
-<li><p>VSZ：进程占用的虚拟内存大小</p>
-</li>
-<li><p>RSS：这个进程占用的固定内存大小</p>
-</li>
-<li><p>PRI/NI：进程优先级</p>
-</li>
-<li><p>TTY：打开的虚拟终端</p>
-</li>
-<li><p>PPID：当前进程的父进程ID</p>
-</li>
-<li><p>COMMAND：开启这个进程的命令</p>
-</li>
-<li><p>USER：开启进程的用户（表示了当前进程有什么样的权利）</p>
-</li>
-<li><p>F：进程旗标(process flag)</p>
-<ul>
-<li>进程的权限</li>
-<li>4：ROOT权限</li>
 </ul>
 </li>
 </ul>
@@ -298,13 +222,9 @@
 	<div class="container" >
            <ul class="pager">
     	     
-      	     <li class="previous">
-              <a href="/2018/10/11/进程代码/" rel="prev">下一篇</a>
-             </li>
-           
            
               <li class="next">
-              <a href="/2018/10/10/了解线程进程/" rel="prev">上一篇</a>
+              <a href="/2018/10/11/线程/" rel="prev">上一篇</a>
             </li>
            
           </ul>
